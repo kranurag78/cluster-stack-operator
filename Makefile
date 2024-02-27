@@ -89,6 +89,8 @@ CTLPTL_VERSION := 0.8.25
 # Binaries #
 ############
 CONTROLLER_GEN := $(abspath $(TOOLS_BIN_DIR)/controller-gen)
+$(CONTROLLER_GEN): # Build controller-gen from tools folder.
+	go install sigs.k8s.io/controller-tools/cmd/controller-gen@v0.12.0
 
 KUSTOMIZE := $(abspath $(TOOLS_BIN_DIR)/kustomize)
 kustomize: $(KUSTOMIZE) ## Build a local copy of kustomize
@@ -228,7 +230,7 @@ test-release:
 	$(MAKE) release-manifests
 
 .PHONY: release-manifests
-release-manifests: get-dependencies generate-manifests generate-go-deepcopy $(KUSTOMIZE) $(RELEASE_DIR) ## Builds the manifests to publish with a release
+release-manifests: generate-manifests generate-go-deepcopy $(KUSTOMIZE) $(RELEASE_DIR) ## Builds the manifests to publish with a release
 	$(KUSTOMIZE) build config/default > $(RELEASE_DIR)/cso-infrastructure-components.yaml
 	## Build cso-components (aggregate of all of the above).
 	cp metadata.yaml $(RELEASE_DIR)/metadata.yaml
