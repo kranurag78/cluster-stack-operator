@@ -38,17 +38,17 @@ fi
 export VERSION=$(git fetch --quiet origin main && git show origin/main:Makefile | grep "BUILDER_IMAGE_VERSION :=" | sed 's/.*BUILDER_IMAGE_VERSION := //' | sed 's/\s.*$//' )
 export NEW_VERSION=$(semver_upgrade patch ${VERSION})
 
-if docker manifest inspect ghcr.io/sovereigncloudstack/cso-builder:${VERSION} > /dev/null ; echo $?; then
+if docker manifest inspect ghcr.io/kranurag78/cso-builder:${VERSION} > /dev/null ; echo $?; then
 
   sed -i -e "/^BUILDER_IMAGE_VERSION /s/:=.*$/:= ${NEW_VERSION}/" Makefile
   for FILE in ${REPO_ROOT}/.github/workflows/*; do
-    if grep "image: ghcr.io/sovereigncloudstack/cso-builder" $FILE
+    if grep "image: ghcr.io/kranurag78/cso-builder" $FILE
     then
       sed -i -e "/image: ghcr\.io\/sovereigncloudstack\/cso-builder:/s/:.*$/: ghcr\.io\/sovereigncloudstack\/cso-builder:${NEW_VERSION}/" $FILE
     fi
   done
-  docker build -t ghcr.io/sovereigncloudstack/cso-builder:${NEW_VERSION}  ./images/builder
-  docker push ghcr.io/sovereigncloudstack/cso-builder:${NEW_VERSION}
+  docker build -t ghcr.io/kranurag78/cso-builder:${NEW_VERSION}  ./images/builder
+  docker push ghcr.io/kranurag78/cso-builder:${NEW_VERSION}
 else
   exit 1
 fi

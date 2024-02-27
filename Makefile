@@ -14,7 +14,7 @@
 
 CONTROLLER_SHORT = cso
 CONTROLLER_NAME = cluster-stack-operator
-IMAGE_PREFIX ?= ghcr.io/sovereigncloudstack
+IMAGE_PREFIX ?= ghcr.io/kranurag78
 
 STAGING_IMAGE = $(CONTROLLER_SHORT)-staging
 BUILDER_IMAGE = $(IMAGE_PREFIX)/$(CONTROLLER_SHORT)-builder

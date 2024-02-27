@@ -14,7 +14,7 @@ on: # yamllint disable-line rule:truthy
       - completed
   workflow_dispatch:
 env:
-  REGISTRY: ghcr.io/sovereigncloudstack
+  REGISTRY: ghcr.io/kranurag78
   metadata_flavor: latest=true
   metadata_tags: type=sha,prefix=sha-,format=short
 permissions:
@@ -110,13 +110,13 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "true"
         run: |
-          cosign sign --yes ghcr.io/sovereigncloudstack/cso-staging@${{ steps.docker_build_release_cso.outputs.digest }}
+          cosign sign --yes ghcr.io/kranurag78/cso-staging@${{ steps.docker_build_release_cso.outputs.digest }}
 
       - name: Image Releases digests cso
         shell: bash
         run: |
           mkdir -p image-digest/
-          echo "ghcr.io/sovereigncloudstack/cso-staging:{{ steps.metacso.outputs.tags }}@${{ steps.docker_build_release_cso.outputs.digest }}" >> image-digest/cso.txt
+          echo "ghcr.io/kranurag78/cso-staging:{{ steps.metacso.outputs.tags }}@${{ steps.docker_build_release_cso.outputs.digest }}" >> image-digest/cso.txt
 
       # Upload artifact digests
       - name: Upload artifact digests

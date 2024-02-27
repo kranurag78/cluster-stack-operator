@@ -4,7 +4,7 @@ on:
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 env:
-  REGISTRY: ghcr.io/sovereigncloudstack
+  REGISTRY: ghcr.io/kranurag78
   metadata_flavor: latest=true
   metadata_tags: type=ref,event=tag
 permissions:
@@ -80,7 +80,7 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "true"
         run: |
-          cosign sign --yes ghcr.io/sovereigncloudstack/cso@${{ steps.docker_build_release_cso.outputs.digest }}
+          cosign sign --yes ghcr.io/kranurag78/cso@${{ steps.docker_build_release_cso.outputs.digest }}
 
       - name: Generate SBOM CSO
         shell: bash
@@ -88,26 +88,26 @@ jobs:
         # To-Do: format SBOM output to json after cosign v2.0 is released with https://github.com/sigstore/cosign/pull/2479
         run: |
           bom generate -o sbom_ci_main_cso_${{ steps.metacso.outputs.version }}.spdx \
-          --image=ghcr.io/sovereigncloudstack/cso:${{ steps.metacso.outputs.version }}
+          --image=ghcr.io/kranurag78/cso:${{ steps.metacso.outputs.version }}
 
       - name: Attach SBOM to Container Images cso
         run: |
-          cosign attach sbom --sbom sbom_ci_main_cso_${{ steps.metacso.outputs.version }}.spdx ghcr.io/sovereigncloudstack/cso@${{ steps.docker_build_release_cso.outputs.digest }}
+          cosign attach sbom --sbom sbom_ci_main_cso_${{ steps.metacso.outputs.version }}.spdx ghcr.io/kranurag78/cso@${{ steps.docker_build_release_cso.outputs.digest }}
 
       - name: Sign SBOM Images cso
         env:
           COSIGN_EXPERIMENTAL: "true"
         run: |
           docker_build_release_digest="${{ steps.docker_build_release_cso.outputs.digest }}"
-          image_name="ghcr.io/sovereigncloudstack/cso:${docker_build_release_digest/:/-}.sbom"
+          image_name="ghcr.io/kranurag78/cso:${docker_build_release_digest/:/-}.sbom"
           docker_build_release_sbom_digest="sha256:$(docker buildx imagetools inspect --raw ${image_name} | sha256sum | head -c 64)"
-          cosign sign --yes "ghcr.io/sovereigncloudstack/cso@${docker_build_release_sbom_digest}"
+          cosign sign --yes "ghcr.io/kranurag78/cso@${docker_build_release_sbom_digest}"
 
       - name: Image Releases digests cso
         shell: bash
         run: |
           mkdir -p image-digest/
-          echo "ghcr.io/sovereigncloudstack/cso:{{ steps.metacso.outputs.version }}@${{ steps.docker_build_release_cso.outputs.digest }}" >> image-digest/cso.txt
+          echo "ghcr.io/kranurag78/cso:{{ steps.metacso.outputs.version }}@${{ steps.docker_build_release_cso.outputs.digest }}" >> image-digest/cso.txt
 
       # Upload artifact digests
       - name: Upload artifact digests
