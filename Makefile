@@ -88,10 +88,12 @@ CTLPTL_VERSION := 0.8.25
 ############
 # Binaries #
 ############
+# need in CI for releasing
 CONTROLLER_GEN := $(abspath $(TOOLS_BIN_DIR)/controller-gen)
 $(CONTROLLER_GEN): # Build controller-gen from tools folder.
 	go install sigs.k8s.io/controller-tools/cmd/controller-gen@v0.12.0
 
+# need this in CI for releasing
 KUSTOMIZE := $(abspath $(TOOLS_BIN_DIR)/kustomize)
 kustomize: $(KUSTOMIZE) ## Build a local copy of kustomize
 $(KUSTOMIZE): # Build kustomize from tools folder.

@@ -150,7 +150,8 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      # kustomize is the only dependency for releasing 
+      # kustomize and controller-gen dependency for releasing 
+      # we should be able to get those dependencies without invoking container from private registeries.
       - name: install kustomize
         run: |
           make kustomize
