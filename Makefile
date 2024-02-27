@@ -530,7 +530,7 @@ tilt-up: env-vars-for-wl-cluster $(ENVSUBST) $(KUBECTL) $(KUSTOMIZE) $(TILT) clu
 BINARIES = clusterctl controller-gen helm kind kubectl kustomize trivy
 get-dependencies:
 ifeq ($(BUILD_IN_CONTAINER),true)
-	docker run --rm -t -i \
+	docker run --rm \
 		-v $(shell pwd):/src/cluster-stack-operator \
 		$(BUILDER_IMAGE):$(BUILDER_IMAGE_VERSION) $@;
 else
