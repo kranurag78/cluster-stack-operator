@@ -155,19 +155,7 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      - name: Login to ghcr.io for CI
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: pull the image
-      #   run: |
-      #     echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      #     docker pull ghcr.io/syself/caph:latest 
-      #     docker pull ghcr.io/kranurag78/cso-builder:1.0.1
-      
+      # kustomize is the only dependency for releasing 
       - name: install kustomize
         run: |
           make kustomize
