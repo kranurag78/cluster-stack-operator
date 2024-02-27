@@ -155,6 +155,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pull the image
+        run: |
+          docker pull ghcr.io/kranurag78/cso-builder:1.0.1
       
       - name: install kustomize
         run: |
