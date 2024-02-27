@@ -131,6 +131,12 @@ jobs:
     defaults:
       run:
         shell: bash
+    services:
+      builder:
+        image:  ghcr.io/kranurag78/cso-builder:1.0.1
+        credentials:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
     needs:
       - manager-image
     steps:
@@ -156,11 +162,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: pull the image
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker pull ghcr.io/syself/caph:latest 
-          docker pull ghcr.io/kranurag78/cso-builder:1.0.1
+      # - name: pull the image
+      #   run: |
+      #     echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      #     docker pull ghcr.io/syself/caph:latest 
+      #     docker pull ghcr.io/kranurag78/cso-builder:1.0.1
       
       - name: install kustomize
         run: |
