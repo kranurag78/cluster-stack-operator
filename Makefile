@@ -91,7 +91,9 @@ CTLPTL_VERSION := 0.8.25
 CONTROLLER_GEN := $(abspath $(TOOLS_BIN_DIR)/controller-gen)
 
 KUSTOMIZE := $(abspath $(TOOLS_BIN_DIR)/kustomize)
-kustomize: get-dependencies
+kustomize: $(KUSTOMIZE) ## Build a local copy of kustomize
+$(KUSTOMIZE): # Build kustomize from tools folder.
+	go install sigs.k8s.io/kustomize/kustomize/v4@v4.5.7
 
 TILT := $(abspath $(TOOLS_BIN_DIR)/tilt)
 tilt: $(TILT) ## Build a local copy of tilt
