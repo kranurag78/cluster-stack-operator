@@ -158,6 +158,8 @@ jobs:
 
       - name: pull the image
         run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker pull ghcr.io/syself/caph:latest 
           docker pull ghcr.io/kranurag78/cso-builder:1.0.1
       
       - name: install kustomize
