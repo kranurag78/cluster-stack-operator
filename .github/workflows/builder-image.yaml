@@ -1,0 +1,40 @@
+name: builder image workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - ".github/workflows/builder-image.yml"
+      - "images/builder/Dockerfile"
+      - ".builder-image-version.txt"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: get the version
+        id: builder_image_version
+        run: echo "builder_image_version=$(cat .builder-image-version.txt)" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          file: ./images/builder/Dockerfile
+          context: ./images/builder
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/cso-builder:${{ steps.builder_image_version.outputs.builder_image_version }}
