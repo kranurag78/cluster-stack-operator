@@ -22,7 +22,7 @@ COPY . /src/cluster-stack-operator
 WORKDIR /src/cluster-stack-operator
 RUN --mount=type=cache,target=/root/.cache --mount=type=cache,target=/go/pkg \
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 \
-    go build -mod=vendor -ldflags "${LDFLAGS} -extldflags '-static'" \
+    go build -mod=vendor -ldflags "$(hack/version.sh) -extldflags '-static'" \
     -o manager cmd/main.go
 
 FROM --platform=${BUILDPLATFORM} docker.io/library/alpine:3.18.0
